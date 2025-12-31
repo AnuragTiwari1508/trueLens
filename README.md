@@ -2,7 +2,7 @@
 
 > **“Because misinformation is a security problem, not a social one.”**
 
-TruLens is a **multi-modal, API-first misinformation detection and verification platform** designed to combat **fake news, deepfakes, and forged documents** across messaging platforms, browsers, apps, and enterprise systems.
+TrueLens is a **multi-modal, API-first misinformation detection and verification platform** designed to combat **fake news, deepfakes, and forged documents** across messaging platforms, browsers, apps, and enterprise systems.
 
 ---
 
@@ -202,6 +202,14 @@ Copy code
 
 ---
 
+## 🏁 Conclusion
+
+TrueLens is not just a detection tool — it is a **trust infrastructure** for the digital ecosystem.
+
+By treating misinformation as a **security threat**, TruLens enables faster, explainable, and scalable verification across platforms.
+
+---
+
 ## 👥 Team Information
 
 **Team Name:** _[IMAGINARY_CODERS]_  
@@ -211,15 +219,6 @@ Copy code
 **Team Members:**  
 - Member 1 – CHITRANSH SAHU
 - Member 1 – Anurag Tiwari
-
----
-
-## 🏁 Conclusion
-
-TruLens is not just a detection tool — it is a **trust infrastructure** for the digital ecosystem.
-
-By treating misinformation as a **security threat**, TruLens enables faster, explainable, and scalable verification across platforms.
-
 
 
 
