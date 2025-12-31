@@ -69,27 +69,9 @@ Copy code
 
 pgsql
 Copy code
-        ┌──────────────────────────┐
-        │    User / Platform       │
-        └────────────┬─────────────┘
-                     |
-              ┌──────▼───────┐
-              │ API Gateway  │
-              └──────┬───────┘
-                     |
-    ┌────────────────▼────────────────┐
-    │ Primary AI Verification Engine   │
-    │ (Text | Image | Video | Document)│
-    └────────────────┬────────────────┘
-                     |
-    ┌────────────────▼────────────────┐
-    │ Secondary Trusted APIs           │
-    │ (Persona-like / Authority DBs)   │
-    └────────────────┬────────────────┘
-                     |
-    ┌────────────────▼────────────────┐
-    │ Confidence Score + Explanation   │
-    └─────────────────────────────────┘
+<img width="1200" height="529" alt="41598_2021_3100_Fig1_HTML" src="https://github.com/user-attachments/assets/019b8bf2-ae9a-4ba8-a308-39c54dc51ced" />
+<img width="850" height="510" alt="Flow-chart-of-visual-deepfake-detection" src="https://github.com/user-attachments/assets/7ffdae28-ae0d-4df6-8463-72ce63ac07bb" />
+
 yaml
 Copy code
 
@@ -237,10 +219,6 @@ Copy code
 TruLens is not just a detection tool — it is a **trust infrastructure** for the digital ecosystem.
 
 By treating misinformation as a **security threat**, TruLens enables faster, explainable, and scalable verification across platforms.
-
----
-
-
 
 
 
