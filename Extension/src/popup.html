@@ -13,8 +13,14 @@
         <h1>TrueLens Detector</h1>
       </header>
       <section class="controls">
-        <button id="scan-page">Scan Page</button>
-        <button id="scan-images">Scan Images</button>
+        <button id="scan-page" class="primary-btn">🔍 Scan Current Page</button>
+      </section>
+      <section id="loading" style="display: none;">
+        <div class="spinner"></div>
+        <p>Analyzing page content...</p>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress"></div>
+        </div>
       </section>
       <section id="results"></section>
     </div>
