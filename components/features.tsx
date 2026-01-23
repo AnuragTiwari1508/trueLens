@@ -119,10 +119,13 @@ export default function Features() {
                 </div>
 
                 {/* CTA Button */}
-                <button className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${feature.bgColor} ${feature.textColor} hover:shadow-lg group/btn`}>
+                <Link 
+                  href={`/${feature.id}`}
+                  className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${feature.bgColor} ${feature.textColor} hover:shadow-lg group/btn`}
+                >
                   Explore {feature.title.split(' ')[0]}
                   <ChevronRight size={18} className="group-hover/btn:translate-x-1 transition-transform" />
-                </button>
+                </Link>
               </div>
             </div>
           ))}
