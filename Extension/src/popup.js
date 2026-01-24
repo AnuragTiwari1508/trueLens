@@ -1,18 +1,34 @@
 // Load config from config.js or configHelper
 let API_URL = 'https://truelens-fact-check-api.onrender.com/fact-check'
 let BACKEND_API = 'http://localhost:3000/api'
+let configLoaded = false
 
 // Initialize config on load
-document.addEventListener('DOMContentLoaded', async () => {
-  if (typeof extensionConfig !== 'undefined') {
-    await extensionConfig.loadFromStorage()
-    API_URL = extensionConfig.get('FACT_CHECK_API')
-    BACKEND_API = extensionConfig.get('BACKEND_API')
-  } else if (typeof CONFIG !== 'undefined') {
-    API_URL = CONFIG.FACT_CHECK_API || API_URL
-    BACKEND_API = CONFIG.BACKEND_API || BACKEND_API
+async function initializeConfig() {
+  if (configLoaded) return
+  
+  try {
+    if (typeof extensionConfig !== 'undefined') {
+      await extensionConfig.loadFromStorage()
+      API_URL = extensionConfig.get('FACT_CHECK_API')
+      BACKEND_API = extensionConfig.get('BACKEND_API')
+    } else if (typeof CONFIG !== 'undefined') {
+      API_URL = CONFIG.FACT_CHECK_API || API_URL
+      BACKEND_API = CONFIG.BACKEND_API || BACKEND_API
+    }
+    configLoaded = true
+    console.log('[TrueLens] Config loaded:', { API_URL, BACKEND_API })
+  } catch (e) {
+    console.warn('[TrueLens] Config load failed, using defaults:', e)
+    configLoaded = true
   }
-})
+}
+
+// Initialize immediately
+initializeConfig()
+
+// Also try on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', initializeConfig)
 
 let currentProgress = 0
 let selectedFile = null
@@ -129,11 +145,19 @@ async function scanPage() {
   showLoading('Scanning page content...')
   
   try {
+    // Ensure config is loaded
+    await initializeConfig()
+    
     // Get active tab
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
     
     if (!tab?.id) {
       throw new Error('No active tab found')
+    }
+    
+    // Check if we can access this page
+    if (tab.url?.startsWith('chrome://') || tab.url?.startsWith('chrome-extension://')) {
+      throw new Error('Cannot scan Chrome internal pages')
     }
     
     // Ensure content script is loaded
@@ -148,14 +172,19 @@ async function scanPage() {
     const pageText = result.result
     
     if (!pageText || pageText.length < 50) {
-      throw new Error('Not enough content to analyze')
+      throw new Error('Not enough content to analyze. Try a different page.')
     }
+    
+    console.log('[TrueLens] Calling API:', API_URL, 'Content length:', pageText.length)
     
     // Call fact-check API
     const response = await fetch(`${API_URL}?text=${encodeURIComponent(pageText)}`)
     
+    console.log('[TrueLens] API response status:', response.status)
+    
     if (!response.ok) {
-      throw new Error('Failed to analyze page')
+      const errorText = await response.text().catch(() => 'Unknown error')
+      throw new Error(`API Error (${response.status}): ${errorText.substring(0, 100)}`)
     }
     
     const data = await response.json()
@@ -164,8 +193,9 @@ async function scanPage() {
     
     setTimeout(() => showPageResults(data), 500)
   } catch (error) {
+    console.error('[TrueLens] Scan page error:', error)
     hideLoading()
-    showError(error.message)
+    showError(error.message || 'Failed to analyze page')
   }
 }
 
