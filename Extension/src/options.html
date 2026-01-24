@@ -153,11 +153,35 @@ const CONFIG = {<br/>
       const factCheckInput = document.getElementById('fact_check_url')
       const saveBtn = document.getElementById('save')
 
+      // Default values
+      const defaults = {
+        backend: 'http://localhost:3000/api',
+        factCheck: 'https://truelens-fact-check-api.onrender.com/fact-check'
+      }
+
+      // Get config values safely
+      function getConfigValue(key, defaultValue) {
+        try {
+          if (typeof CONFIG !== 'undefined' && CONFIG[key]) {
+            return CONFIG[key]
+          }
+        } catch (e) {
+          console.warn('Config not available:', e)
+        }
+        return defaultValue
+      }
+
       // Load saved settings
-      chrome.storage.sync.get(['backend_url', 'fact_check_url'], (items) => {
-        backendInput.value = items.backend_url || (typeof CONFIG !== 'undefined' ? CONFIG.BACKEND_API : 'http://localhost:3000/api')
-        factCheckInput.value = items.fact_check_url || (typeof CONFIG !== 'undefined' ? CONFIG.FACT_CHECK_API : 'https://truelens-fact-check-api.onrender.com/fact-check')
-      })
+      try {
+        chrome.storage.sync.get(['backend_url', 'fact_check_url'], (items) => {
+          backendInput.value = items.backend_url || getConfigValue('BACKEND_API', defaults.backend)
+          factCheckInput.value = items.fact_check_url || getConfigValue('FACT_CHECK_API', defaults.factCheck)
+        })
+      } catch (e) {
+        console.warn('Storage not available, using defaults:', e)
+        backendInput.value = getConfigValue('BACKEND_API', defaults.backend)
+        factCheckInput.value = getConfigValue('FACT_CHECK_API', defaults.factCheck)
+      }
 
       // Save settings
       saveBtn.addEventListener('click', () => {
@@ -166,15 +190,26 @@ const CONFIG = {<br/>
           fact_check_url: factCheckInput.value
         }
         
-        chrome.storage.sync.set(settings, () => {
-          saveBtn.textContent = '✅ Saved!'
-          saveBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)'
+        try {
+          chrome.storage.sync.set(settings, () => {
+            saveBtn.textContent = '✅ Saved!'
+            saveBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)'
+            
+            setTimeout(() => {
+              saveBtn.textContent = '💾 Save Settings'
+              saveBtn.style.background = 'linear-gradient(135deg, #6366f1, #3b82f6)'
+            }, 2000)
+          })
+        } catch (e) {
+          console.error('Failed to save settings:', e)
+          saveBtn.textContent = '❌ Error!'
+          saveBtn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)'
           
           setTimeout(() => {
             saveBtn.textContent = '💾 Save Settings'
             saveBtn.style.background = 'linear-gradient(135deg, #6366f1, #3b82f6)'
           }, 2000)
-        })
+        }
       })
     </script>
   </body>
