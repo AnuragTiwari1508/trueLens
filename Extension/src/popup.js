@@ -84,6 +84,19 @@ function updateProgress() {
   }
 }
 
+// Ensure content script is injected
+async function ensureContentScript(tabId) {
+  try {
+    await chrome.scripting.executeScript({
+      target: { tabId },
+      files: ['src/contentScript.js', 'src/areaSelector.js']
+    })
+  } catch (e) {
+    // Ignore if already injected
+    console.warn('[TrueLens] Content script already injected', e)
+  }
+}
+
 // ============ SCAN PAGE FEATURE ============
 async function scanPage() {
   showLoading('Scanning page content...')
@@ -91,6 +104,13 @@ async function scanPage() {
   try {
     // Get active tab
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
+    
+    if (!tab?.id) {
+      throw new Error('No active tab found')
+    }
+    
+    // Ensure content script is loaded
+    await ensureContentScript(tab.id)
     
     // Extract page content
     const [result] = await chrome.scripting.executeScript({
@@ -320,19 +340,21 @@ function showVideoResults(result) {
 // ============ CAPTURE AREA FEATURE ============
 async function captureArea() {
   try {
-    // Close popup to show the page
-    window.close()
-    
     // Get active tab
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
     
-    // Inject area selector into the page
-    await chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      function: () => {
-        chrome.runtime.sendMessage({ action: 'startAreaSelection' })
-      }
-    })
+    if (!tab?.id) {
+      throw new Error('No active tab found')
+    }
+    
+    // Ensure content script is loaded
+    await ensureContentScript(tab.id)
+    
+    // Close popup to show the page
+    window.close()
+    
+    // Send message to content script to start area selection
+    chrome.tabs.sendMessage(tab.id, { action: 'startAreaSelection' })
     
     // The area selector content script will handle the rest
     // When user completes selection, areaCapured message will be sent
