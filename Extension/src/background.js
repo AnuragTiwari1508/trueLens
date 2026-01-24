@@ -36,10 +36,12 @@ async function captureSelectedArea(tabId, selection) {
       dataUrl: croppedImage
     })
   } catch (error) {
-    console.error('Error capturing area:', error)
+    const errorMsg = error?.message || String(error)
+    console.error('[TrueLens] Error capturing area:', errorMsg)
+    
     chrome.runtime.sendMessage({
       action: 'captureError',
-      error: error.message
+      error: errorMsg
     })
   }
 }
