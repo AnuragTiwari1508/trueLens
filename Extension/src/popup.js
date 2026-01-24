@@ -1,6 +1,18 @@
-// Load config from config.js
-const API_URL = typeof CONFIG !== 'undefined' ? CONFIG.FACT_CHECK_API : 'https://truelens-fact-check-api.onrender.com/fact-check'
-const BACKEND_API = typeof CONFIG !== 'undefined' ? CONFIG.BACKEND_API : 'http://localhost:3000/api'
+// Load config from config.js or configHelper
+let API_URL = 'https://truelens-fact-check-api.onrender.com/fact-check'
+let BACKEND_API = 'http://localhost:3000/api'
+
+// Initialize config on load
+document.addEventListener('DOMContentLoaded', async () => {
+  if (typeof extensionConfig !== 'undefined') {
+    await extensionConfig.loadFromStorage()
+    API_URL = extensionConfig.get('FACT_CHECK_API')
+    BACKEND_API = extensionConfig.get('BACKEND_API')
+  } else if (typeof CONFIG !== 'undefined') {
+    API_URL = CONFIG.FACT_CHECK_API || API_URL
+    BACKEND_API = CONFIG.BACKEND_API || BACKEND_API
+  }
+})
 
 let currentProgress = 0
 let selectedFile = null
@@ -365,11 +377,11 @@ async function captureArea() {
     // Ensure content script is loaded
     await ensureContentScript(tab.id)
     
-    // Close popup to show the page
-    window.close()
-    
     // Send message to content script to start area selection
-    chrome.tabs.sendMessage(tab.id, { action: 'startAreaSelection' })
+    await chrome.tabs.sendMessage(tab.id, { action: 'startAreaSelection' })
+    
+    // Close popup AFTER sending message
+    setTimeout(() => window.close(), 100)
     
     // The area selector content script will handle the rest
     // When user completes selection, areaCapured message will be sent
