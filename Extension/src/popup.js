@@ -50,6 +50,19 @@ document.getElementById('analyze-media').addEventListener('click', async () => {
 // Scan Page Button
 document.getElementById('scan-page').addEventListener('click', scanPage)
 
+// Capture Area Button
+document.getElementById('capture-area').addEventListener('click', captureArea)
+
+// Listen for area capture completion
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === 'areaCapured') {
+    analyzeAreaScreenshot(request.dataUrl)
+  } else if (request.action === 'captureError') {
+    hideLoading()
+    showError(request.error)
+  }
+})
+
 // Loading Functions
 function showLoading(message = 'Analyzing content...') {
   document.getElementById('loading').style.display = 'block'
@@ -302,6 +315,70 @@ function showVideoResults(result) {
       </div>
     ` : ''}
   `
+}
+
+// ============ CAPTURE AREA FEATURE ============
+async function captureArea() {
+  try {
+    // Close popup to show the page
+    window.close()
+    
+    // Get active tab
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
+    
+    // Inject area selector into the page
+    await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      function: () => {
+        chrome.runtime.sendMessage({ action: 'startAreaSelection' })
+      }
+    })
+    
+    // The area selector content script will handle the rest
+    // When user completes selection, areaCapured message will be sent
+  } catch (error) {
+    showError('Failed to start area selection: ' + error.message)
+  }
+}
+
+async function analyzeAreaScreenshot(dataUrl) {
+  showLoading('Analyzing selected area...')
+  
+  try {
+    // Convert data URL to blob
+    const response = await fetch(dataUrl)
+    const blob = await response.blob()
+    
+    // Extract text from the screenshot using OCR (if available)
+    // For now, we'll send the image directly to fake news detector
+    // You can integrate with an OCR API here
+    
+    // Convert to File object
+    const file = new File([blob], 'screenshot.png', { type: 'image/png' })
+    
+    // For now, show that we captured the area successfully
+    currentProgress = 100
+    document.getElementById('progress').style.width = '100%'
+    
+    setTimeout(() => {
+      hideLoading()
+      document.getElementById('results').innerHTML = `
+        <div class="verdict verdict-real">
+          <h2>📸 Area Captured!</h2>
+          <p>Screenshot analysis feature coming soon</p>
+        </div>
+        <div class="summary-box">
+          <h3>💡 Next Steps</h3>
+          <p>We're working on integrating OCR and image analysis for captured areas.</p>
+          <p style="margin-top: 8px;">For now, use "Scan Full Page" to analyze text content.</p>
+        </div>
+        <img src="${dataUrl}" style="width: 100%; border-radius: 8px; margin-top: 12px; border: 2px solid #e2e8f0;" />
+      `
+    }, 1000)
+  } catch (error) {
+    hideLoading()
+    showError('Failed to analyze area: ' + error.message)
+  }
 }
 
 // Error Display
