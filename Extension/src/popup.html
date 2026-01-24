@@ -50,7 +50,20 @@
       <!-- Results Section -->
       <section id="results"></section>
     </div>
-    <script src="../config.js"></script>
+    
+    <!-- Load config with error handling -->
+    <script>
+      // Initialize CONFIG if not loaded
+      if (typeof CONFIG === 'undefined') {
+        window.CONFIG = {
+          FACT_CHECK_API: 'https://truelens-fact-check-api.onrender.com/fact-check',
+          BACKEND_API: 'http://localhost:3000/api',
+          HUGGING_FACE_SPACE: 'ChitranshSahu/deepfake-detection',
+          DEEPFAKE_API_KEY: 'al-dpYkyrb9jc38lasjJgZ_PtmyVa_swLgJxdtuUC6cqtR'
+        }
+      }
+    </script>
+    <script src="../config.js" onerror="console.warn('Config.js not loaded, using defaults')"></script>
     <script src="configHelper.js"></script>
     <script src="popup.js"></script>
   </body>
