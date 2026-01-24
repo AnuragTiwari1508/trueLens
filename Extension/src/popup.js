@@ -92,8 +92,23 @@ async function ensureContentScript(tabId) {
       files: ['src/contentScript.js', 'src/areaSelector.js']
     })
   } catch (e) {
-    // Ignore if already injected
-    console.warn('[TrueLens] Content script already injected', e)
+    // Ignore specific errors - script may already be injected
+    const errorMsg = e?.message || String(e)
+    
+    // These errors are safe to ignore
+    const safeErrors = [
+      'already injected',
+      'frame was removed',
+      'Cannot access',
+      'Extension context invalidated'
+    ]
+    
+    const isSafeError = safeErrors.some(safe => errorMsg.includes(safe))
+    
+    if (!isSafeError) {
+      console.error('[TrueLens] Failed to inject content script:', errorMsg)
+      throw e // Re-throw if it's a real error
+    }
   }
 }
 
