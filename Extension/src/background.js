@@ -4,12 +4,21 @@ let pendingSelection = null
 
 // Listen for messages from content script and popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === 'captureArea') {
-    captureSelectedArea(sender.tab.id, request.selection)
-    sendResponse({ success: true })
-  } else if (request.action === 'cancelSelection') {
-    pendingSelection = null
-    sendResponse({ success: true })
+  try {
+    if (request.action === 'captureArea') {
+      captureSelectedArea(sender.tab?.id, request.selection)
+        .then(() => sendResponse({ success: true }))
+        .catch(err => sendResponse({ success: false, error: err.message }))
+      return true // Keep channel open for async response
+    } else if (request.action === 'cancelSelection') {
+      pendingSelection = null
+      sendResponse({ success: true })
+    } else if (request.action === 'getPendingSelection') {
+      sendResponse({ selection: pendingSelection })
+      pendingSelection = null // Clear after retrieval
+    }
+  } catch (error) {
+    sendResponse({ success: false, error: error?.message || String(error) })
   }
   return true
 })
@@ -37,12 +46,23 @@ async function captureSelectedArea(tabId, selection) {
     })
   } catch (error) {
     const errorMsg = error?.message || String(error)
-    console.error('[TrueLens] Error capturing area:', errorMsg)
     
-    chrome.runtime.sendMessage({
-      action: 'captureError',
-      error: errorMsg
-    })
+    // Safe error logging
+    try {
+      console.error('[TrueLens] Error capturing area:', errorMsg)
+    } catch (e) {
+      // Ignore console errors
+    }
+    
+    // Notify popup about error
+    try {
+      chrome.runtime.sendMessage({
+        action: 'captureError',
+        error: errorMsg
+      })
+    } catch (e) {
+      // Popup might be closed - ignore
+    }
   }
 }
 
@@ -83,12 +103,3 @@ async function cropImage(dataUrl, selection) {
     img.src = dataUrl
   })
 }
-
-// Expose function to get pending selection
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === 'getPendingSelection') {
-    sendResponse({ selection: pendingSelection })
-    pendingSelection = null // Clear after retrieval
-  }
-  return true
-})
