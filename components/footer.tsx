@@ -7,7 +7,7 @@ export default function Footer() {
   return (
     <footer className="bg-slate-900 dark:bg-slate-950 text-white py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-5 gap-8 mb-12">
+        <div className="grid md:grid-cols-6 gap-8 mb-12">
           {/* Brand */}
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4">
@@ -40,6 +40,23 @@ export default function Footer() {
               <li><Link href="#" className="hover:text-white transition-colors">API Reference</Link></li>
               <li><Link href="#" className="hover:text-white transition-colors">Blog</Link></li>
               <li><Link href="#" className="hover:text-white transition-colors">Community</Link></li>
+            </ul>
+          </div>
+
+          {/* Try our BOT */}
+          <div>
+            <h4 className="font-semibold mb-4">🤖 Try our BOT</h4>
+            <ul className="space-y-2 text-slate-400 text-sm">
+              <li>
+                <a href="https://wa.me/15551560710" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-2">
+                  <span>💬</span> WhatsApp Bot
+                </a>
+              </li>
+              <li>
+                <a href="https://t.me/fact_cs_bot" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-2">
+                  <span>✈️</span> Telegram Bot
+                </a>
+              </li>
             </ul>
           </div>
 

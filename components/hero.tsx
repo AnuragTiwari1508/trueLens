@@ -59,7 +59,7 @@ export default function Hero() {
               Unified verification platform that catches misinformation, detects deepfakes, and validates documents with AI + blockchain. Works on WhatsApp, APIs, extensions, and more.
             </p>
 
-            <div className="flex flex-wrap gap-4 mb-12">
+            <div className="flex flex-wrap gap-4 mb-8">
               <button className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-pink-600 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-indigo-500/50 transition-all duration-300 group">
                 Start Verifying
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
@@ -67,6 +67,31 @@ export default function Hero() {
               <button className="flex items-center gap-2 px-6 py-3 border-2 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
                 View Documentation
               </button>
+            </div>
+
+            {/* Try our BOT */}
+            <div className="mb-12 p-4 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg border border-green-200 dark:border-green-700">
+              <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">🤖 Try our BOT</h3>
+              <div className="flex flex-wrap gap-3">
+                <a 
+                  href="https://wa.me/15551560710" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition-colors text-sm"
+                >
+                  <span>💬</span>
+                  WhatsApp Bot
+                </a>
+                <a 
+                  href="https://t.me/fact_cs_bot" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors text-sm"
+                >
+                  <span>✈️</span>
+                  Telegram Bot
+                </a>
+              </div>
             </div>
 
             {/* Stats */}

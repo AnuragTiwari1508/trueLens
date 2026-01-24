@@ -10,9 +10,10 @@ const bots = [
     icon: '💬',
     description: 'Send images, videos, or news articles directly on WhatsApp to get instant verification',
     features: ['Real-time detection', 'Instant reports', 'Group verification', 'Confidence scoring'],
+    contact: '+1 (555) 156-0710',
+    link: 'https://wa.me/15551560710',
     size: '2.4 MB',
-    downloads: '12.5K+',
-    rating: 4.8,
+    platform: 'API Ready',
     color: 'from-green-500 to-emerald-600'
   },
   {
@@ -20,9 +21,10 @@ const bots = [
     icon: '📱',
     description: 'Powerful bot for channels and group verification with batch processing',
     features: ['Batch processing', 'Channel monitoring', 'Admin dashboard', 'Report exports'],
+    contact: '@fact_cs_bot',
+    link: 'https://t.me/fact_cs_bot',
     size: '1.8 MB',
-    downloads: '8.2K+',
-    rating: 4.7,
+    platform: 'API Ready',
     color: 'from-blue-500 to-cyan-600'
   },
   {
@@ -82,13 +84,12 @@ export default function BotsPage() {
                   {/* Icon & Title */}
                   <div className="flex items-start justify-between mb-4">
                     <div className="text-5xl">{bot.icon}</div>
-                    <div className="text-right">
-                      <div className="flex items-center gap-1 justify-end mb-2">
-                        <span className="font-semibold text-slate-900 dark:text-white">{bot.rating}</span>
-                        <span className="text-lg">⭐</span>
+                    {bot.contact && (
+                      <div className="text-right bg-gradient-to-r from-indigo-50 to-pink-50 dark:from-indigo-900/30 dark:to-pink-900/30 px-4 py-2 rounded-lg border border-indigo-200 dark:border-indigo-700">
+                        <p className="text-xs text-slate-500 dark:text-slate-400 uppercase mb-1">🤖 Try our BOT</p>
+                        <p className="font-semibold text-slate-900 dark:text-white">{bot.contact}</p>
                       </div>
-                      <p className="text-xs text-slate-600 dark:text-slate-400">{bot.downloads} downloads</p>
-                    </div>
+                    )}
                   </div>
 
                   <h3 className="text-2xl font-bold mb-2 text-slate-900 dark:text-white">
@@ -116,21 +117,33 @@ export default function BotsPage() {
                     </div>
                     <div>
                       <p className="text-xs text-slate-500 dark:text-slate-400 uppercase">Platform</p>
-                      <p className="font-semibold text-slate-900 dark:text-white">API Ready</p>
+                      <p className="font-semibold text-slate-900 dark:text-white">{bot.platform}</p>
                     </div>
                   </div>
 
                   {/* CTA Buttons */}
-                  <div className="flex gap-3">
-                    <button className="flex-1 flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-indigo-600 to-pink-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all group-hover:scale-105">
-                      <Download size={18} />
-                      Download
-                    </button>
-                    <button className="flex-1 flex items-center justify-center gap-2 py-3 border-2 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                  {bot.link ? (
+                    <a
+                      href={bot.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-indigo-600 to-pink-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all group-hover:scale-105"
+                    >
                       <MessageCircle size={18} />
-                      Docs
-                    </button>
-                  </div>
+                      🤖 Try our BOT
+                    </a>
+                  ) : (
+                    <div className="flex gap-3">
+                      <button className="flex-1 flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-indigo-600 to-pink-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all group-hover:scale-105">
+                        <Download size={18} />
+                        Download
+                      </button>
+                      <button className="flex-1 flex items-center justify-center gap-2 py-3 border-2 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                        <MessageCircle size={18} />
+                        Docs
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
