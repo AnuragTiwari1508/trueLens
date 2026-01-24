@@ -1,0 +1,53 @@
+{
+  "manifest_version": 3,
+  "name": "TrueLens Extension",
+  "version": "1.0.0",
+  "description": "Detect Fake News and Deepfakes",
+  "permissions": [
+    "activeTab",
+    "contextMenus",
+    "scripting",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://truelens-fact-check-api.onrender.com/*",
+    "https://*.gradio.live/*",
+    "https://huggingface.co/*",
+    "*://*/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';"
+  },
+  "action": {
+    "default_popup": "src/popup/index.html"
+  },
+  "background": {
+    "service_worker": "service-worker-loader.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "js": [
+        "content.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ],
+      "css": [
+        "assets/content-CNfVRPGF.css"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "resources": [
+        "content.js"
+      ],
+      "use_dynamic_url": false
+    }
+  ]
+}

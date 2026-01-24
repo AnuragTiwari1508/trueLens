@@ -1,0 +1,324 @@
+/* trueLens Content Script Styling - Matching Website Aesthetic */
+:root {
+  --tl-primary: #3b82f6;
+  --tl-accent: #8b5cf6;
+  --tl-bg: #0f172a;
+  --tl-card: #1e293b;
+  --tl-text: #f8fafc;
+  --tl-muted: #94a3b8;
+  --tl-success: #22c55e;
+  --tl-error: #ef4444;
+}
+
+.truelens-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2147483647;
+  pointer-events: none;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.truelens-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(2, 6, 23, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: auto;
+}
+
+.truelens-box {
+  background: var(--tl-bg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--tl-text);
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.truelens-header {
+  padding: 1.25rem 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.truelens-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-icon {
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, var(--tl-primary), var(--tl-accent));
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.truelens-logo h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+#truelens-close {
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  color: var(--tl-muted);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+#truelens-close:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--tl-error);
+}
+
+.truelens-content {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.truelens-footer {
+  padding: 0.75rem 1.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: center;
+}
+
+.truelens-footer p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--tl-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+/* Loading State */
+.truelens-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(59, 130, 246, 0.1);
+  border-top-color: var(--tl-primary);
+  border-radius: 50%;
+  animation: tl-spin 1s linear infinite;
+  margin: 2rem auto;
+}
+
+@keyframes tl-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Results - Fake News */
+.truelens-summary-section {
+  background: rgba(59, 130, 246, 0.05);
+  border: 1px solid rgba(59, 130, 246, 0.1);
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
+}
+
+.truelens-summary-section strong {
+  color: var(--tl-primary);
+  display: block;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.truelens-summary-section p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.truelens-claim-item {
+  background: var(--tl-card);
+  padding: 1.25rem;
+  border-radius: 14px;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--tl-muted);
+}
+
+.truelens-claim-item.true { border-left-color: var(--tl-success); }
+.truelens-claim-item.false { border-left-color: var(--tl-error); }
+
+.truelens-claim-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.truelens-verdict-tag {
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  text-transform: uppercase;
+}
+
+.truelens-score {
+  font-size: 0.75rem;
+  color: var(--tl-muted);
+}
+
+.truelens-claim-text {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.truelens-rationale {
+  font-size: 0.85rem;
+  color: var(--tl-muted);
+  line-height: 1.5;
+}
+
+.truelens-sources {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.truelens-sources a {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--tl-primary);
+  text-decoration: none;
+  margin-bottom: 4px;
+}
+
+/* Results - Deepfake */
+.truelens-deepfake-container {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.truelens-deepfake-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.truelens-badge-icon {
+  font-size: 3.5rem;
+}
+
+.truelens-badge-info strong {
+  display: block;
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+}
+
+.truelens-badge-info.real strong { color: var(--tl-success); }
+.truelens-badge-info.fake strong { color: var(--tl-error); }
+
+.truelens-badge-info span {
+  font-size: 0.9rem;
+  color: var(--tl-muted);
+}
+
+/* Buttons */
+.truelens-btn-primary {
+  background: linear-gradient(135deg, var(--tl-primary), var(--tl-accent));
+  color: white;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.truelens-btn-primary:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.truelens-btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--tl-text);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.truelens-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Animations */
+.animated-slide-in {
+  animation: tlSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes tlSlideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.fade-out {
+  animation: tlFadeOut 0.3s forwards;
+}
+
+@keyframes tlFadeOut {
+  to { opacity: 0; }
+}
+
+/* Capture Mode Styling */
+#truelens-capture-dim {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 2147483646;
+  cursor: crosshair;
+}
+
+#truelens-selection {
+  position: fixed;
+  border: 2px solid var(--tl-primary);
+  background: rgba(59, 130, 246, 0.1);
+  z-index: 2147483647;
+  pointer-events: none;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.3);
+}
