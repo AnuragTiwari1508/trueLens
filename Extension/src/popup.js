@@ -1,9 +1,59 @@
-const API_URL = 'https://truelens-fact-check-api.onrender.com/fact-check'
+// Load config from config.js
+const API_URL = typeof CONFIG !== 'undefined' ? CONFIG.FACT_CHECK_API : 'https://truelens-fact-check-api.onrender.com/fact-check'
+const BACKEND_API = typeof CONFIG !== 'undefined' ? CONFIG.BACKEND_API : 'http://localhost:3000/api'
 
 let currentProgress = 0
+let selectedFile = null
 
-function showLoading() {
+// Tab Switching
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    // Remove active class from all tabs
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'))
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'))
+    
+    // Add active class to clicked tab
+    btn.classList.add('active')
+    const tabId = btn.getAttribute('data-tab')
+    document.getElementById(`${tabId}-tab`).classList.add('active')
+    
+    // Clear results when switching tabs
+    document.getElementById('results').innerHTML = ''
+  })
+})
+
+// File Upload Handler
+document.getElementById('image-upload').addEventListener('change', (e) => {
+  selectedFile = e.target.files[0]
+  const analyzeBtn = document.getElementById('analyze-media')
+  
+  if (selectedFile) {
+    analyzeBtn.disabled = false
+    analyzeBtn.textContent = `🔍 Analyze ${selectedFile.type.startsWith('video') ? 'Video' : 'Image'}`
+  } else {
+    analyzeBtn.disabled = true
+    analyzeBtn.textContent = '🔍 Analyze Media'
+  }
+})
+
+// Analyze Media Button
+document.getElementById('analyze-media').addEventListener('click', async () => {
+  if (!selectedFile) return
+  
+  if (selectedFile.type.startsWith('video')) {
+    await analyzeVideo(selectedFile)
+  } else {
+    await analyzeImage(selectedFile)
+  }
+})
+
+// Scan Page Button
+document.getElementById('scan-page').addEventListener('click', scanPage)
+
+// Loading Functions
+function showLoading(message = 'Analyzing content...') {
   document.getElementById('loading').style.display = 'block'
+  document.getElementById('loading-text').textContent = message
   document.getElementById('results').innerHTML = ''
   currentProgress = 0
   updateProgress()
@@ -21,7 +71,63 @@ function updateProgress() {
   }
 }
 
-function showResults(data) {
+// ============ SCAN PAGE FEATURE ============
+async function scanPage() {
+  showLoading('Scanning page content...')
+  
+  try {
+    // Get active tab
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
+    
+    // Extract page content
+    const [result] = await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      function: extractPageContent
+    })
+    
+    const pageText = result.result
+    
+    if (!pageText || pageText.length < 50) {
+      throw new Error('Not enough content to analyze')
+    }
+    
+    // Call fact-check API
+    const response = await fetch(`${API_URL}?text=${encodeURIComponent(pageText)}`)
+    
+    if (!response.ok) {
+      throw new Error('Failed to analyze page')
+    }
+    
+    const data = await response.json()
+    currentProgress = 100
+    document.getElementById('progress').style.width = '100%'
+    
+    setTimeout(() => showPageResults(data), 500)
+  } catch (error) {
+    hideLoading()
+    showError(error.message)
+  }
+}
+
+function extractPageContent() {
+  // Clone the document to avoid modifying the actual page
+  const clone = document.body.cloneNode(true)
+  
+  // Remove unwanted elements
+  const unwanted = clone.querySelectorAll('script, style, nav, header, footer, iframe, noscript')
+  unwanted.forEach(el => el.remove())
+  
+  // Get text content
+  let text = clone.innerText || clone.textContent || ''
+  
+  // Clean up whitespace
+  text = text.replace(/\s+/g, ' ').trim()
+  
+  // Limit to 3000 characters
+  return text.substring(0, 3000)
+}
+
+function showPageResults(data) {
   hideLoading()
   const resultsDiv = document.getElementById('results')
   
@@ -39,132 +145,171 @@ function showResults(data) {
   const misleadingClaims = data.claims.filter(c => c.verdict === 'Misleading').length
   
   const overallVerdict = falseClaims > trueClaims ? 'FAKE' : 'REAL'
-  const verdictClass = overallVerdict === 'FAKE' ? 'verdict-fake' : 'verdict-real'
-  const verdictEmoji = overallVerdict === 'FAKE' ? '☠️' : '✅'
   
-  let html = `
-    <div class="verdict ${verdictClass}">
-      <div class="verdict-header">
-        <span class="verdict-emoji">${verdictEmoji}</span>
-        <h2>Page Content: ${overallVerdict}</h2>
-      </div>
-      <div class="stats">
-        <div class="stat stat-true">✅ ${trueClaims} True</div>
-        <div class="stat stat-false">❌ ${falseClaims} False</div>
-        <div class="stat stat-misleading">⚠️ ${misleadingClaims} Misleading</div>
-      </div>
+  resultsDiv.innerHTML = `
+    <div class="verdict verdict-${overallVerdict.toLowerCase()}">
+      <h2>${overallVerdict === 'FAKE' ? '⚠️ Likely FAKE' : '✅ Likely REAL'}</h2>
+      <p>Based on ${data.claims.length} claims analyzed</p>
     </div>
     
-    <div class="summary">
-      <h3>📋 Summary</h3>
-      <p>${data.summary || 'Analysis completed'}</p>
+    <div class="stats-grid">
+      <div class="stat-card true">
+        <div class="stat-value">${trueClaims}</div>
+        <div class="stat-label">True</div>
+      </div>
+      <div class="stat-card false">
+        <div class="stat-value">${falseClaims}</div>
+        <div class="stat-label">False</div>
+      </div>
+      <div class="stat-card misleading">
+        <div class="stat-value">${misleadingClaims}</div>
+        <div class="stat-label">Misleading</div>
+      </div>
     </div>
     
     <div class="claims-section">
-      <h3>🔍 Analyzed Claims (${data.claims.length})</h3>
-  `
-  
-  data.claims.slice(0, 5).forEach((claim, idx) => {
-    const verdictColor = claim.verdict === 'True' ? '#22c55e' : 
-                        claim.verdict === 'False' ? '#ef4444' : '#f59e0b'
-    html += `
-      <div class="claim-card" style="border-left: 4px solid ${verdictColor}">
-        <div class="claim-verdict" style="color: ${verdictColor}">
-          ${claim.verdict === 'True' ? '✅' : claim.verdict === 'False' ? '❌' : '⚠️'} 
-          ${claim.verdict}
-        </div>
-        <p class="claim-text">${claim.claim.atomic_claim}</p>
-        <div class="claim-score">Support: ${claim.support_score}%</div>
-        ${claim.citations.length > 0 ? `
-          <div class="citations">
-            <strong>Source:</strong> ${claim.citations[0].source_title}
+      <h3>📋 Detailed Analysis</h3>
+      ${data.claims.map(claim => `
+        <div class="claim-card verdict-${claim.verdict.toLowerCase()}">
+          <div class="claim-header">
+            <span class="claim-verdict">${claim.verdict}</span>
+            <span class="claim-support">${claim.support_score}% confidence</span>
           </div>
-        ` : ''}
+          <p class="claim-text">${claim.claim}</p>
+          ${claim.sources && claim.sources.length > 0 ? `
+            <div class="claim-sources">
+              <strong>Sources:</strong>
+              ${claim.sources.slice(0, 2).map(src => `
+                <a href="${src.url}" target="_blank">${src.title || 'Source'}</a>
+              `).join(', ')}
+            </div>
+          ` : ''}
+        </div>
+      `).join('')}
+    </div>
+    
+    ${data.summary ? `
+      <div class="summary-box">
+        <h3>📊 Summary</h3>
+        <p>${data.summary}</p>
+      </div>
+    ` : ''}
+  `
+}
+
+// ============ ANALYZE IMAGE/VIDEO FEATURE ============
+async function analyzeImage(file) {
+  showLoading('Analyzing image for manipulation...')
+  
+  // For now, show a message that image analysis is coming soon
+  // You can integrate with a deepfake image detection API here
+  setTimeout(() => {
+    hideLoading()
+    document.getElementById('results').innerHTML = `
+      <div class="no-results">
+        <p>📸 Image analysis feature coming soon!</p>
+        <p style="margin-top: 10px; font-size: 12px;">
+          Currently supports video deepfake detection. Upload a video to analyze.
+        </p>
       </div>
     `
-  })
-  
-  if (data.claims.length > 5) {
-    html += `<p class="more-claims">+ ${data.claims.length - 5} more claims analyzed</p>`
-  }
-  
-  html += '</div>'
-  resultsDiv.innerHTML = html
+  }, 2000)
 }
 
-function showError(message) {
-  hideLoading()
-  document.getElementById('results').innerHTML = `
-    <div class="error">
-      <p>❌ ${message}</p>
-    </div>
-  `
-}
-
-async function scanPage() {
+async function analyzeVideo(file) {
+  showLoading('Analyzing video for deepfakes...')
+  
   try {
-    showLoading()
+    // Create FormData and append video
+    const formData = new FormData()
+    formData.append('video', file)
     
-    // Get current tab
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
-    
-    if (!tab || !tab.id) {
-      showError('Could not access current tab')
-      return
-    }
-    
-    // Execute content script to extract text
-    const results = await chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      function: extractPageContent
-    })
-    
-    const pageText = results[0]?.result
-    
-    if (!pageText || pageText.trim().length < 50) {
-      showError('Not enough content to analyze on this page')
-      return
-    }
-    
-    // Call fact-check API
-    const response = await fetch(`${API_URL}?text=${encodeURIComponent(pageText)}`, {
+    // Call backend API (your Next.js API)
+    const response = await fetch(`${BACKEND_API}/deepfake/detect`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
+      body: formData
     })
     
-    if (!response.ok) {
-      throw new Error('API request failed')
+    // Check content type
+    const contentType = response.headers.get('content-type')
+    if (!contentType || !contentType.includes('application/json')) {
+      const text = await response.text()
+      throw new Error(`Server error: ${text.substring(0, 100)}`)
     }
     
     const data = await response.json()
+    
+    if (!response.ok) {
+      throw new Error(data.error || 'Analysis failed')
+    }
+    
+    currentProgress = 100
     document.getElementById('progress').style.width = '100%'
     
-    setTimeout(() => {
-      showResults(data)
-    }, 300)
-    
+    setTimeout(() => showVideoResults(data.detectionResult), 500)
   } catch (error) {
-    console.error('Error:', error)
-    showError(error.message || 'Failed to analyze page')
+    hideLoading()
+    showError(error.message)
   }
 }
 
-// Function injected into page to extract content
-function extractPageContent() {
-  // Remove scripts, styles, and other non-content elements
-  const clone = document.body.cloneNode(true)
-  const elementsToRemove = clone.querySelectorAll('script, style, nav, header, footer, aside, iframe')
-  elementsToRemove.forEach(el => el.remove())
+function showVideoResults(result) {
+  hideLoading()
+  const resultsDiv = document.getElementById('results')
   
-  // Get all text content
-  let text = clone.innerText || clone.textContent || ''
+  if (!result) {
+    resultsDiv.innerHTML = `
+      <div class="no-results">
+        <p>⚠️ No results received</p>
+      </div>
+    `
+    return
+  }
   
-  // Clean up whitespace
-  text = text.replace(/\s+/g, ' ').trim()
+  // Parse result if it's nested
+  let resultData = result
+  if (Array.isArray(resultData) && resultData.length > 0) {
+    resultData = Array.isArray(resultData[0]) ? resultData[0][0] : resultData[0]
+  }
   
-  // Limit to first 3000 characters for API
-  return text.substring(0, 3000)
+  const isFake = resultData.label?.toUpperCase() === 'FAKE' || (resultData.confidence ?? 0) > 0.5
+  const confidencePercent = (resultData.confidence * 100).toFixed(1)
+  
+  resultsDiv.innerHTML = `
+    <div class="verdict verdict-${isFake ? 'fake' : 'real'}">
+      <h2>${isFake ? '☠️ FAKE VIDEO' : '✅ REAL VIDEO'}</h2>
+      <p>Deepfake Probability: ${confidencePercent}%</p>
+    </div>
+    
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">${resultData.frame_count || 0}</div>
+        <div class="stat-label">Frames Analyzed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${confidencePercent}%</div>
+        <div class="stat-label">Confidence</div>
+      </div>
+    </div>
+    
+    ${resultData.frame_probs && resultData.frame_probs.length > 0 ? `
+      <div class="summary-box">
+        <h3>📊 Frame Analysis</h3>
+        <p>${resultData.frame_probs.length} frames analyzed</p>
+        <p style="margin-top: 8px; font-size: 12px;">
+          Average probability: ${(resultData.frame_probs.reduce((a, b) => a + b, 0) / resultData.frame_probs.length * 100).toFixed(1)}%
+        </p>
+      </div>
+    ` : ''}
+  `
 }
 
-// Event listeners
-document.getElementById('scan-page')?.addEventListener('click', scanPage)
+// Error Display
+function showError(message) {
+  const resultsDiv = document.getElementById('results')
+  resultsDiv.innerHTML = `
+    <div class="no-results">
+      <p>❌ Error: ${message}</p>
+    </div>
+  `
+}

@@ -12,18 +12,44 @@
         <img src="../icons/icon.svg" alt="TrueLens" width="32" height="32" />
         <h1>TrueLens Detector</h1>
       </header>
-      <section class="controls">
-        <button id="scan-page" class="primary-btn">🔍 Scan Current Page</button>
-      </section>
+      
+      <!-- Tab Navigation -->
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="page">📄 Scan Page</button>
+        <button class="tab-btn" data-tab="image">🖼️ Scan Image</button>
+      </div>
+
+      <!-- Scan Page Tab -->
+      <div id="page-tab" class="tab-content active">
+        <section class="controls">
+          <button id="scan-page" class="primary-btn">🔍 Scan Current Page</button>
+        </section>
+      </div>
+
+      <!-- Scan Image Tab -->
+      <div id="image-tab" class="tab-content">
+        <section class="controls">
+          <label for="image-upload" class="upload-label">
+            📸 Select Image/Video
+          </label>
+          <input type="file" id="image-upload" accept="image/*,video/*" style="display: none;" />
+          <button id="analyze-media" class="primary-btn" disabled>🔍 Analyze Media</button>
+        </section>
+      </div>
+
+      <!-- Loading Section -->
       <section id="loading" style="display: none;">
         <div class="spinner"></div>
-        <p>Analyzing page content...</p>
+        <p id="loading-text">Analyzing content...</p>
         <div class="progress-bar">
           <div class="progress-fill" id="progress"></div>
         </div>
       </section>
+
+      <!-- Results Section -->
       <section id="results"></section>
     </div>
+    <script src="../config.js"></script>
     <script src="popup.js"></script>
   </body>
 </html>
