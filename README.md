@@ -3,9 +3,8 @@ Unified Media Verification Platform
 Detect misinformation. Identify digital fraud. Verify media and documents.
 
 An AI-powered platform for analysing suspicious messages, phishing links, websites, applications, deepfakes, and documents — with explainable risk indicators and evidence-oriented reports.
-
-<!-- Replace the URL below with the deployed application URL. -->
-<a href="#"><strong>🌐 Explore trueLens</strong></a>
+<!-- Replace the URL below with the deployed application URL. -->&#x20;
+<a href="#"><strong>🌐 Explore trueLens</strong></a> <!-- Add your deployed URL here -->
 </div>📚 Table of Contents
 - 🌟 About the Project
 - 🎯 The Problem
@@ -25,12 +24,15 @@ An AI-powered platform for analysing suspicious messages, phishing links, websit
 - 🔑 Environment Variables
 - 🔐 Security & Privacy
 - ⚠️ Limitations & Disclaimer
+<a id="about-the-project"></a>
 🌟 About the Project
 trueLens is a unified digital-content verification platform that helps users examine potentially fraudulent, misleading, or manipulated content through a single interface.
 
 Whether it is a suspicious WhatsApp forward, a phishing URL, a potentially fraudulent investment application, a manipulated video, or a forged certificate, trueLens brings multiple verification workflows together.
 
 The platform follows an AI + rules + secondary verification approach. Instead of simply labelling content as real or fake, it aims to make assessments easier to understand by presenting risk levels, detected indicators, and supporting evidence.
+
+<a id="the-problem"></a>
 🎯 The Problem
 Digital fraud and misinformation take many forms:
 - 📩 Scam messages distributed through SMS, email, and messaging platforms.
@@ -39,6 +41,8 @@ Digital fraud and misinformation take many forms:
 - 🎭 Deepfake media that can misrepresent people, events, or statements.
 - 📄 Forged documents such as certificates, identity documents, signatures, and official records.
 These threats often require separate tools and investigation methods. trueLens aims to bring these checks into one unified verification experience.
+
+<a id="three-layer-verification"></a>
 🧠 Three-Layer Verification
 trueLens is designed around three complementary verification layers:
 Verification Layer	Purpose
@@ -48,6 +52,8 @@ Verification Layer	Purpose
 
 
 This layered approach is intended to reduce reliance on any single detection signal and provide additional context for human review.
+
+<a id="verification-capabilities"></a>
 🛡️ Verification Capabilities
 1. 📰 Fake News, Scam Messages & Phishing
 Analyses text and links to identify suspicious claims, scam language, and potentially harmful destinations.
@@ -87,6 +93,7 @@ Analysis capabilities
 - Identification of suspicious permissions and application patterns.
 - Website, domain, hosting, and identity-level checks.
 - Extraction of payment clues, phone numbers, UPI IDs, and related identifiers.
+<a id="how-it-works"></a>
 ⚙️ How It Works
 A typical verification process follows five steps:
 1. 📤 Submit — Enter suspicious text or a URL, or upload supported media, a document, or an application file.
@@ -94,6 +101,7 @@ A typical verification process follows five steps:
 3. 🚦 Assess Risk — Combine available signals into Low, Medium, or High risk levels, with readable explanations.
 4. 🔗 Link Evidence — Match related domains, phone numbers, UPI IDs, accounts, and previously observed cases where data is available.
 5. 📝 Generate Report — Present findings and supporting evidence in a structured report for review or follow-up.
+<a id="system-architecture"></a>
 🏗️ System Architecture
 At a high level, trueLens is organised into three connected areas:
 Component	Responsibilities
@@ -103,6 +111,8 @@ Component	Responsibilities
 
 
 The modular design allows verification capabilities to be developed and integrated independently.
+
+<a id="key-features"></a>
 ✨ Key Features
 Feature	Description
 🔍 Unified Analysis	Multiple content types and verification workflows in one platform.
@@ -115,45 +125,34 @@ Feature	Description
 📱 Responsive Interface	Designed for desktop and mobile screen sizes.
 
 
+<a id="platform-preview"></a>
 🖥️ Platform Preview
 The following screenshots showcase the platform interface and its key sections.
 🏠 Homepage
 The main dashboard introduces the platform's verification areas: fake news, deepfakes, and document verification.
-<p align="center">
-  <img src="public/S1.png" alt="trueLens homepage" width="92%" />
-</p>🧩 Three Layers of Verification
+<p align="center">   <img src="public/S1.png" alt="trueLens homepage" width="92%" /> </p>🧩 Three Layers of Verification
 A unified view of the platform's three-layer verification approach.
-<p align="center">
-  <img src="public/S2.png" alt="Three layers of verification" width="92%" />
-</p>📰 Fake News & Text Analysis
+<p align="center">   <img src="public/S2.png" alt="Three layers of verification" width="92%" /> </p>📰 Fake News & Text Analysis
 Submit text for claim extraction, source verification, and anomaly analysis.
-<p align="center">
-  <img src="public/S3.png" alt="Fake news and text analysis interface" width="92%" />
-</p>🎭 Deepfake Detection
+<p align="center">   <img src="public/S3.png" alt="Fake news and text analysis interface" width="92%" /> </p>
+<a id="deepfake-detection"></a>
+🎭 Deepfake Detection
 Upload a video for deepfake analysis and review the detection insights.
-<p align="center">
-  <img src="public/S4.png" alt="Deepfake detection interface" width="92%" />
-</p>📄 Document Verification
+<p align="center">   <img src="public/S4.png" alt="Deepfake detection interface" width="92%" /> </p>
+<a id="document-verification"></a>
+📄 Document Verification
 Upload a certificate, ID, or other supported document for verification checks.
-<p align="center">
-  <img src="public/S5.png" alt="Document verification interface" width="92%" />
-</p>🏢 Enterprise Solutions
+<p align="center">   <img src="public/S5.png" alt="Document verification interface" width="92%" /> </p>🏢 Enterprise Solutions
 Illustrative use cases across education, HR departments, and finance.
-<p align="center">
-  <img src="public/S6.png" alt="Enterprise solutions section" width="92%" />
-</p>⛓️ Blockchain Certification
+<p align="center">   <img src="public/S6.png" alt="Enterprise solutions section" width="92%" /> </p>⛓️ Blockchain Certification
 A concept for timestamped verification records and verifiable credentials.
-<p align="center">
-  <img src="public/S7.png" alt="Blockchain certification section" width="92%" />
-</p>💬 Messaging Platform Integrations
+<p align="center">   <img src="public/S7.png" alt="Blockchain certification section" width="92%" /> </p>💬 Messaging Platform Integrations
 Bot interface concepts for WhatsApp and Telegram.
-<p align="center">
-  <img src="public/S8.png" alt="WhatsApp and Telegram bot interfaces" width="92%" />
-</p>
+<p align="center">   <img src="public/S8.png" alt="WhatsApp and Telegram bot interfaces" width="92%" /> </p>
 Additional integration concepts for Discord and Slack.
-<p align="center">
-  <img src="public/S9.png" alt="Discord and Slack integration cards" width="92%" />
-</p>💻 Technology Stack
+<p align="center">   <img src="public/S9.png" alt="Discord and Slack integration cards" width="92%" /> </p>
+<a id="technology-stack"></a>
+💻 Technology Stack
 Frontend
 Technology	Usage
 ⚛️ React 19	UI components.
@@ -170,6 +169,7 @@ Application Areas
 - 💬 Bot and integration pages.
 - 🔌 API information.
 - 👥 Community interface.
+<a id="project-structure"></a>
 📂 Project Structure
 The main application pages and reusable UI components are organised as follows:
 .
@@ -200,6 +200,7 @@ The main application pages and reusable UI components are organised as follows:
 │
 └── public/
     └── S1.png – S9.png           # README preview screenshots
+<a id="getting-started"></a>
 🚀 Getting Started
 Follow these steps to run trueLens locally.
 📋 Prerequisites
@@ -217,11 +218,14 @@ Open http://localhost:3000 in your browser.
 4. 🏗️ Create a Production Build
 npm run build
 npm start
+<a id="environment-variables"></a>
 🔑 Environment Variables
 The project configuration notes include the following example environment variables:
 NEXT_PUBLIC_API_BASE_URL=https://api.truelens.io
 NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL=http://localhost:3000
 Set values appropriate to your own deployment. Never commit private keys, access tokens, or other secrets to the repository.
+
+<a id="security-privacy"></a>
 🔐 Security & Privacy
 trueLens is designed around the following principles:
 - 🔒 Encrypted handling of submitted media where supported.
@@ -232,4 +236,13 @@ trueLens is designed around the following principles:
 - 🛡️ Controlled access to verification APIs and connected services.
 Note: Actual protections depend on the deployed backend, storage configuration, and integrations.
 
-</div>
+<a id="limitations-disclaimer"></a>
+⚠️ Limitations & Disclaimer
+Automated verification is not infallible. False positives and false negatives are possible. A risk score is an indicator based on available signals — it is not a legal, forensic, or official determination.
+
+High-impact decisions should involve human review and independent confirmation from authoritative sources. The availability and accuracy of individual checks depend on the models, APIs, and threat-intelligence services configured in the running deployment.
+<div align="center">🔍 trueLens
+Making digital verification clearer, more accessible, and evidence-oriented.
+<!-- Replace the URL below with the deployed application URL. -->&#x20;
+🌐 Visit trueLens
+</div>&#x20;
