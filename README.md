@@ -4,27 +4,28 @@ Detect misinformation. Identify digital fraud. Verify media and documents.
 
 An AI-powered platform for analysing suspicious messages, phishing links, websites, applications, deepfakes, and documents — with explainable risk indicators and evidence-oriented reports.
 
-🌐 Live Platform <!-- Replace # with the deployed application URL -->
-</div>📑 Table of Contents
-- About trueLens
-- The Problem
-- How Verification Works
-- Verification Capabilities
-  - Fake News, Scam Messages & Phishing
-  - Deepfake Detection
-  - Document Verification
-  - App, APK & Website Analysis
-- Verification Workflow
-- System Architecture
-- Key Features
-- Platform Preview
-- Technology Stack
-- Project Structure
-- Getting Started
-- Environment Configuration
-- Security & Privacy
-- Limitations & Disclaimer
-🌟 About trueLens
+<!-- Replace the URL below with the deployed application URL. -->
+<a href="#"><strong>🌐 Explore trueLens</strong></a>
+</div>📚 Table of Contents
+- 🌟 About the Project
+- 🎯 The Problem
+- 🧠 Three-Layer Verification
+- 🛡️ Verification Capabilities
+  - 📰 Fake News, Scam Messages & Phishing
+  - 🎭 Deepfake Detection
+  - 📄 Document Verification
+  - 📱 App, APK & Website Analysis
+- ⚙️ How It Works
+- 🏗️ System Architecture
+- ✨ Key Features
+- 🖥️ Platform Preview
+- 💻 Technology Stack
+- 📂 Project Structure
+- 🚀 Getting Started
+- 🔑 Environment Variables
+- 🔐 Security & Privacy
+- ⚠️ Limitations & Disclaimer
+🌟 About the Project
 trueLens is a unified digital-content verification platform that helps users examine potentially fraudulent, misleading, or manipulated content through a single interface.
 
 Whether it is a suspicious WhatsApp forward, a phishing URL, a potentially fraudulent investment application, a manipulated video, or a forged certificate, trueLens brings multiple verification workflows together.
@@ -38,9 +39,9 @@ Digital fraud and misinformation take many forms:
 - 🎭 Deepfake media that can misrepresent people, events, or statements.
 - 📄 Forged documents such as certificates, identity documents, signatures, and official records.
 These threats often require separate tools and investigation methods. trueLens aims to bring these checks into one unified verification experience.
-🧠 How Verification Works
+🧠 Three-Layer Verification
 trueLens is designed around three complementary verification layers:
-Layer	Role
+Verification Layer	Purpose
 🧠 1. Primary AI Detection	Analyses submitted content using task-specific AI/ML models, pattern detection, and rule-based checks.
 🔎 2. Secondary Verification	Cross-checks available signals using external verification services, reputation sources, and threat-intelligence feeds where configured.
 📊 3. Confidence Aggregation	Combines the available results into an explainable risk assessment.
@@ -86,7 +87,7 @@ Analysis capabilities
 - Identification of suspicious permissions and application patterns.
 - Website, domain, hosting, and identity-level checks.
 - Extraction of payment clues, phone numbers, UPI IDs, and related identifiers.
-⚙️ Verification Workflow
+⚙️ How It Works
 A typical verification process follows five steps:
 1. 📤 Submit — Enter suspicious text or a URL, or upload supported media, a document, or an application file.
 2. 🤖 Analyse — Run the relevant AI, rule-based, metadata, URL, or document checks.
@@ -119,53 +120,56 @@ The following screenshots showcase the platform interface and its key sections.
 🏠 Homepage
 The main dashboard introduces the platform's verification areas: fake news, deepfakes, and document verification.
 <p align="center">
-  <img src="public/S1.png" alt="trueLens homepage" width="92%">
+  <img src="public/S1.png" alt="trueLens homepage" width="92%" />
 </p>🧩 Three Layers of Verification
 A unified view of the platform's three-layer verification approach.
 <p align="center">
-  <img src="public/S2.png" alt="Three layers of verification" width="92%">
+  <img src="public/S2.png" alt="Three layers of verification" width="92%" />
 </p>📰 Fake News & Text Analysis
 Submit text for claim extraction, source verification, and anomaly analysis.
 <p align="center">
-  <img src="public/S3.png" alt="Fake news and text analysis interface" width="92%">
+  <img src="public/S3.png" alt="Fake news and text analysis interface" width="92%" />
 </p>🎭 Deepfake Detection
 Upload a video for deepfake analysis and review the detection insights.
 <p align="center">
-  <img src="public/S4.png" alt="Deepfake detection interface" width="92%">
+  <img src="public/S4.png" alt="Deepfake detection interface" width="92%" />
 </p>📄 Document Verification
 Upload a certificate, ID, or other supported document for verification checks.
 <p align="center">
-  <img src="public/S5.png" alt="Document verification interface" width="92%">
+  <img src="public/S5.png" alt="Document verification interface" width="92%" />
 </p>🏢 Enterprise Solutions
 Illustrative use cases across education, HR departments, and finance.
 <p align="center">
-  <img src="public/S6.png" alt="Enterprise solutions section" width="92%">
+  <img src="public/S6.png" alt="Enterprise solutions section" width="92%" />
 </p>⛓️ Blockchain Certification
 A concept for timestamped verification records and verifiable credentials.
 <p align="center">
-  <img src="public/S7.png" alt="Blockchain certification section" width="92%">
+  <img src="public/S7.png" alt="Blockchain certification section" width="92%" />
 </p>💬 Messaging Platform Integrations
 Bot interface concepts for WhatsApp and Telegram.
 <p align="center">
-  <img src="public/S8.png" alt="WhatsApp and Telegram bot interfaces" width="92%">
+  <img src="public/S8.png" alt="WhatsApp and Telegram bot interfaces" width="92%" />
 </p>
 Additional integration concepts for Discord and Slack.
 <p align="center">
-  <img src="public/S9.png" alt="Discord and Slack integration cards" width="92%">
+  <img src="public/S9.png" alt="Discord and Slack integration cards" width="92%" />
 </p>💻 Technology Stack
 Frontend
-- ⚛️ React 19 — UI components.
-- ▲ Next.js 16 — App Router and application framework.
-- 🔷 TypeScript — Type-safe development.
-- 🎨 Tailwind CSS v4 — Styling and responsive layouts.
-- ✨ Custom CSS — Animations, transitions, and visual effects.
+Technology	Usage
+⚛️ React 19	UI components.
+▲ Next.js 16	App Router and application framework.
+🔷 TypeScript	Type-safe development.
+🎨 Tailwind CSS v4	Styling and responsive layouts.
+✨ Custom CSS	Animations, transitions, and visual effects.
+
+
 Application Areas
-- Fake news and misinformation analysis.
-- Deepfake detection.
-- Document verification.
-- Bot and integration pages.
-- API information.
-- Community interface.
+- 📰 Fake news and misinformation analysis.
+- 🎭 Deepfake detection.
+- 📄 Document verification.
+- 💬 Bot and integration pages.
+- 🔌 API information.
+- 👥 Community interface.
 📂 Project Structure
 The main application pages and reusable UI components are organised as follows:
 .
@@ -198,22 +202,22 @@ The main application pages and reusable UI components are organised as follows:
     └── S1.png – S9.png           # README preview screenshots
 🚀 Getting Started
 Follow these steps to run trueLens locally.
-Prerequisites
+📋 Prerequisites
 Make sure the following are installed:
 - Node.js (LTS version recommended)
 - npm (included with Node.js)
-1. Clone the Repository
+1. 📥 Clone the Repository
 git clone <repository-url>
 cd <project-directory>
-2. Install Dependencies
+2. 📦 Install Dependencies
 npm install
-3. Start the Development Server
+3. ▶️ Start the Development Server
 npm run dev
 Open http://localhost:3000 in your browser.
-4. Create a Production Build
+4. 🏗️ Create a Production Build
 npm run build
 npm start
-🔑 Environment Configuration
+🔑 Environment Variables
 The project configuration notes include the following example environment variables:
 NEXT_PUBLIC_API_BASE_URL=https://api.truelens.io
 NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL=http://localhost:3000
@@ -226,10 +230,6 @@ trueLens is designed around the following principles:
 - 📋 Audit-friendly records for verification activity.
 - 🧠 Explainable assessments that expose the reasons behind a result.
 - 🛡️ Controlled access to verification APIs and connected services.
-Actual protections depend on the deployed backend, storage configuration, and integrations.
+Note: Actual protections depend on the deployed backend, storage configuration, and integrations.
 
-<div align="center">🔍 trueLens
-Making digital verification clearer, more accessible, and evidence-oriented.
-
-🌐 Visit trueLens <!-- Replace # with the deployed application URL -->
 </div>
